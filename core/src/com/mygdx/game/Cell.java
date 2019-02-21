@@ -1,36 +1,66 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.*;
 
 
-
-public class Cell extends BaseActor
+public class Cell extends Actor
 {
     private int neighboors;
     private boolean alive;
+    private TextureRegion texture;
 
-    public Cell(float x, float y, Stage s)
+    public Cell(float x, float y, float width, float height, Stage s, TextureRegion texture)
     {
-        super(x, y, s);
+        setPosition(x,y);
+        s.addActor(this);
 
-        loadTexture("assets/cell.png");
+        this.texture = texture;
         neighboors = 0;
-        setColor(Color.BLACK);
-        alive = false;
+        setAlive(false);
 
-        this.addListener((Event e) ->
+        setWidth(width);
+        setHeight(height);
+
+        addListener((Event e) ->
         {
             if ( !(e instanceof InputEvent) ||
                     !((InputEvent)e).getType().equals(InputEvent.Type.touchDown) )
                 return false;
 
-            setColor(Color.WHITE);
-            alive = true;
+            setAlive(true);
             return false;
         });
+
+       /*this.addListener(new InputListener()
+       {
+           boolean clicked = false;
+           @Override
+           public boolean keyDown(InputEvent event, int keycode)
+           {
+               clicked = true;
+               Gdx.app.log("Touch", "Down");
+               return true;
+           }
+
+           @Override
+           public boolean keyUp(InputEvent event, int keycode)
+           {
+               clicked = false;
+               return false;
+           }
+
+           @Override
+           public boolean mouseMoved(InputEvent event, float x, float y)
+           {
+               if(clicked)
+               setAlive(true);
+               return false;
+           }
+       });*/
     }
 
     public void setNeighboors(int neighboors)
@@ -59,5 +89,19 @@ public class Cell extends BaseActor
 
         if((neighboors < 2 || neighboors > 3) && isAlive())
             setAlive(false);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha)
+    {
+        Color c = getColor();
+        batch.setColor(c.r, c.g, c.b, c.a);
+
+        if ( isVisible() && isAlive())
+            batch.draw( texture,
+                    getX(), getY(), getOriginX(), getOriginY(),
+                    getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation() );
+
+        super.draw(batch, parentAlpha);
     }
 }

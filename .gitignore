@@ -101,13 +101,7 @@ nb-configuration.xml
 /local.properties
 .gradle/
 gradle-app.setting
-/build/
-/android/build/
-/core/build/
-/desktop/build/
-/html/build/
-/ios/build/
-/ios-moe/build/
+
 
 ## OS Specific
 .DS_Store
@@ -123,3 +117,14 @@ Thumbs.db
 !/ios-moe/xcode/*.xcodeproj/xcshareddata
 !/ios-moe/xcode/*.xcodeproj/project.pbxproj
 /ios-moe/xcode/native/
+OLD/Coin.java
+OLD/Ghost.java
+OLD/Hero.java
+OLD/LevelScreen.java
+OLD/Maze.java
+OLD/MazeGame.java
+OLD/Room.java
+OLD/Wall.java
+core/out/production/classes/META-INF/
+/OLD/BaseGame.java
+/OLD/BaseScreen.java
