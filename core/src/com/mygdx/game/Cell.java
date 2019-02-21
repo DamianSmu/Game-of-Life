@@ -1,6 +1,8 @@
 package com.mygdx.game;
 
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -9,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.*;
 
 public class Cell extends Actor
 {
-    private int neighboors;
+    private int neighbours;
     private boolean alive;
     private TextureRegion texture;
 
@@ -19,53 +21,26 @@ public class Cell extends Actor
         s.addActor(this);
 
         this.texture = texture;
-        neighboors = 0;
+        neighbours = 0;
         setAlive(false);
 
         setWidth(width);
         setHeight(height);
 
-        addListener((Event e) ->
-        {
-            if ( !(e instanceof InputEvent) ||
-                    !((InputEvent)e).getType().equals(InputEvent.Type.touchDown) )
-                return false;
-
-            setAlive(true);
-            return false;
-        });
-
-       /*this.addListener(new InputListener()
+       this.addListener(new InputListener()
        {
-           boolean clicked = false;
            @Override
-           public boolean keyDown(InputEvent event, int keycode)
+           public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor)
            {
-               clicked = true;
-               Gdx.app.log("Touch", "Down");
-               return true;
-           }
-
-           @Override
-           public boolean keyUp(InputEvent event, int keycode)
-           {
-               clicked = false;
-               return false;
-           }
-
-           @Override
-           public boolean mouseMoved(InputEvent event, float x, float y)
-           {
-               if(clicked)
+               if(Gdx.input.isButtonPressed(Input.Buttons.LEFT))
                setAlive(true);
-               return false;
            }
-       });*/
+       });
     }
 
-    public void setNeighboors(int neighboors)
+    public void setNeighbours(int neighbours)
     {
-        this.neighboors = neighboors;
+        this.neighbours = neighbours;
     }
 
     public void setAlive(boolean alive)
@@ -84,10 +59,10 @@ public class Cell extends Actor
 
     public void step()
     {
-        if(neighboors == 3 && !isAlive())
+        if(neighbours == 3 && !isAlive())
             setAlive(true);
 
-        if((neighboors < 2 || neighboors > 3) && isAlive())
+        if((neighbours < 2 || neighbours > 3) && isAlive())
             setAlive(false);
     }
 

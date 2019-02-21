@@ -14,10 +14,9 @@ public class GameScreen implements InputProcessor, Screen
     private boolean paused;
     private Stage mainStage;
 
-
     public GameScreen()
     {
-        mainStage = new Stage(new FitViewport(WORLD_WIDTH,WORLD_HEIGHT));
+        mainStage = new Stage(new FitViewport(WORLD_WIDTH, WORLD_HEIGHT));
         manager = new CellManager(mainStage);
         step = 0;
         paused = true;
@@ -34,18 +33,18 @@ public class GameScreen implements InputProcessor, Screen
     @Override
     public void render(float dt)
     {
-        dt = Math.min(dt,1/30f);
+        dt = Math.min(dt, 1 / 30f);
         step += dt;
 
         mainStage.act(dt);
 
-        if(step > REFRESH_RATE && !paused)
+        if (step > REFRESH_RATE && !paused)
         {
             step = 0;
             manager.step();
         }
 
-        Gdx.gl.glClearColor(0,0,0,1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         mainStage.draw();
@@ -72,7 +71,7 @@ public class GameScreen implements InputProcessor, Screen
     @Override
     public void hide()
     {
-        InputMultiplexer im = (InputMultiplexer)Gdx.input.getInputProcessor();
+        InputMultiplexer im = (InputMultiplexer) Gdx.input.getInputProcessor();
         im.removeProcessor(this);
         im.removeProcessor(mainStage);
     }
@@ -86,11 +85,22 @@ public class GameScreen implements InputProcessor, Screen
     @Override
     public boolean keyDown(int keycode)
     {
-        if(keycode == Input.Keys.SPACE)
+
+        switch (keycode)
         {
-            paused = !paused;
-            return true;
+            case Input.Keys.SPACE:
+                paused = !paused;
+                break;
+            case Input.Keys.UP:
+                REFRESH_RATE -= 0.02;
+                REFRESH_RATE = Math.min(Math.max(REFRESH_RATE, 0.01f), 5f);
+                break;
+            case Input.Keys.DOWN:
+                REFRESH_RATE += 0.02;
+                REFRESH_RATE = Math.min(Math.max(REFRESH_RATE, 0.01f), 5f);
+                break;
         }
+
         return false;
     }
 

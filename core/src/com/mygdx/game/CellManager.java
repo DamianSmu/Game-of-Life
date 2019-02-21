@@ -44,7 +44,7 @@ public class CellManager
                     if(close[i].x > 0 && close[i].x < BOARD_WIDTH && close[i].y > 0 && close[i].y < BOARD_HEIGHT && board[close[i].x][close[i].y].isAlive() )
                         cells++;
                 }
-                board[x][y].setNeighboors(cells);
+                board[x][y].setNeighbours(cells);
             }
         }
     }
