@@ -1,13 +1,12 @@
 package com.mygdx.game;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.*;
-
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class Cell extends Actor
 {
@@ -15,27 +14,28 @@ public class Cell extends Actor
     private boolean alive;
     private TextureRegion texture;
 
-    public Cell(float x, float y, float width, float height, Stage s, TextureRegion texture)
+    public Cell(float x, float y, float width, float height, Stage s, TextureRegion texture, boolean alive)
     {
         setPosition(x,y);
         s.addActor(this);
 
         this.texture = texture;
         neighbours = 0;
-        setAlive(false);
+        setAlive(alive);
 
         setWidth(width);
         setHeight(height);
 
-       this.addListener(new InputListener()
-       {
-           @Override
-           public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor)
-           {
-               if(Gdx.input.isButtonPressed(Input.Buttons.LEFT))
-               setAlive(true);
-           }
-       });
+
+        addListener(new ClickListener()
+        {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                setAlive(true);
+                return false;
+            }
+        });
     }
 
     public void setNeighbours(int neighbours)

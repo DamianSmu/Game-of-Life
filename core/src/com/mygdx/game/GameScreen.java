@@ -20,6 +20,8 @@ public class GameScreen implements InputProcessor, Screen
         manager = new CellManager(mainStage);
         step = 0;
         paused = true;
+
+        Gdx.graphics.setTitle("Tickrate: " + String.format("%.2f", REFRESH_RATE));
     }
 
     @Override
@@ -94,10 +96,12 @@ public class GameScreen implements InputProcessor, Screen
             case Input.Keys.UP:
                 REFRESH_RATE -= 0.02;
                 REFRESH_RATE = Math.min(Math.max(REFRESH_RATE, 0.01f), 5f);
+                Gdx.graphics.setTitle("Tickrate: " + String.format("%.2f", REFRESH_RATE));
                 break;
             case Input.Keys.DOWN:
                 REFRESH_RATE += 0.02;
                 REFRESH_RATE = Math.min(Math.max(REFRESH_RATE, 0.01f), 5f);
+                Gdx.graphics.setTitle("Tickrate: " + String.format("%.2f", REFRESH_RATE));
                 break;
         }
 
