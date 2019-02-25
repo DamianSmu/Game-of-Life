@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -13,6 +14,7 @@ public class Cell extends Actor
     private int neighbours;
     private boolean alive;
     private TextureRegion texture;
+    private Polygon bounds;
 
     public Cell(float x, float y, float width, float height, Stage s, TextureRegion texture, boolean alive)
     {
@@ -26,6 +28,7 @@ public class Cell extends Actor
         setWidth(width);
         setHeight(height);
 
+        setBounds();
 
         addListener(new ClickListener()
         {
@@ -78,5 +81,30 @@ public class Cell extends Actor
                     getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation() );
 
         super.draw(batch, parentAlpha);
+    }
+
+    private void setBounds()
+    {
+        float w = getWidth();
+        float h = getHeight();
+
+        float[] vertices = {0,0, w,0, w,h, 0,h};
+        bounds = new Polygon(vertices);
+    }
+    public Polygon getBounds()
+    {
+        bounds.setPosition( getX(), getY() );
+        bounds.setOrigin( getOriginX(), getOriginY() );
+        bounds.setRotation( getRotation() );
+        bounds.setScale( getScaleX(), getScaleY() );
+        return bounds;
+    }
+
+    public boolean overlaps(Cell other)
+    {
+        Polygon poly1 = this.getBounds();
+        Polygon poly2 = other.getBounds();
+
+        return poly1.getBoundingRectangle().overlaps(poly2.getBoundingRectangle());
     }
 }

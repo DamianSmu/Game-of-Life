@@ -87,7 +87,6 @@ public class GameScreen implements InputProcessor, Screen
     @Override
     public boolean keyDown(int keycode)
     {
-
         switch (keycode)
         {
             case Input.Keys.SPACE:

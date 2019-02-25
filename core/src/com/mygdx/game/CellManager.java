@@ -1,9 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import static com.mygdx.game.GameConfig.*;
 
@@ -22,7 +18,7 @@ public class CellManager
         {
             for (int y = 0; y < BOARD_HEIGHT; y++)
             {
-            board[x][y] = new Cell(CELL_WIDTH*x, CELL_HEIGHT*y, CELL_WIDTH, CELL_HEIGHT, stage, CELL_TEXTURE(), false);
+                board[x][y] = new Cell(CELL_WIDTH*x, CELL_HEIGHT*y, CELL_WIDTH, CELL_HEIGHT, stage, CELL_TEXTURE(), false);
             }
         }
 
@@ -72,5 +68,9 @@ public class CellManager
     public Cell getCell(int pos_x, int pos_y)
     {
         return board[pos_x][pos_y];
+    }
+    public void putCell(int pos_x, int pos_y)
+    {
+        board[pos_x][pos_y].setAlive(true);
     }
 }
