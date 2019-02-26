@@ -7,6 +7,7 @@ public class CellManager
 {
     private Stage stage;
     private Cell[][] board;
+    int[][][][] close;
 
     public CellManager(Stage stage)
     {
@@ -22,6 +23,8 @@ public class CellManager
             }
         }
 
+        setCloseCellsPosition();
+
         FigureHolder fh = new FigureHolder(this, new FigureLoader("assets/c.txt"));
     }
 
@@ -31,11 +34,10 @@ public class CellManager
         {
             for (int y = 0; y < BOARD_HEIGHT; y++)
             {
-                Point[] close = {new Point(x - 1, y - 1), new Point(x, y - 1), new Point(x + 1, y - 1), new Point(x - 1, y), new Point(x + 1, y), new Point(x - 1, y + 1), new Point(x, y + 1), new Point(x + 1, y + 1)};
                 int cells = 0;
                 for (int i = 0; i < 8; i++)
                 {
-                    if(close[i].x > 0 && close[i].x < BOARD_WIDTH && close[i].y > 0 && close[i].y < BOARD_HEIGHT && board[close[i].x][close[i].y].isAlive() )
+                    if(close[x][y][i][0] > 0 && close[x][y][i][0] < BOARD_WIDTH && close[x][y][i][1] > 0 && close[x][y][i][1] < BOARD_HEIGHT && board[close[x][y][i][0]][close[x][y][i][1]].isAlive() )
                         cells++;
                 }
                 board[x][y].setNeighbours(cells);
@@ -72,5 +74,17 @@ public class CellManager
     public void putCell(int pos_x, int pos_y)
     {
         board[pos_x][pos_y].setAlive(true);
+    }
+
+    public void setCloseCellsPosition()
+    {
+        close = new int[BOARD_WIDTH][BOARD_HEIGHT][][];
+        for (int x = 0; x < BOARD_WIDTH; x++)
+        {
+            for (int y = 0; y < BOARD_HEIGHT; y++)
+            {
+                close[x][y] = new int[][]{{x - 1, y - 1}, {x, y - 1}, {x + 1, y - 1}, {x - 1, y}, {x + 1, y}, {x - 1, y + 1}, {x, y + 1}, {x + 1, y + 1}};
+            }
+        }
     }
 }

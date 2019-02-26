@@ -1,11 +1,14 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 
 import static com.mygdx.game.GameConfig.*;
@@ -17,6 +20,7 @@ public class FigureHolder
     private int figure_width;
     private int figure_height;
     private CellManager manager;
+    private Vector2 startPosition;
 
     public FigureHolder(CellManager manager, FigureLoader loader)
     {
@@ -34,13 +38,15 @@ public class FigureHolder
             {
                 if (source[i][j] == 1)
                 {
-                    group.addActor(new Cell( j * CELL_WIDTH,  i * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, manager.getStage(), CELL_TEXTURE(), true));
+                    group.addActor(new Cell(j * CELL_WIDTH, i * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, manager.getStage(), CELL_TEXTURE(), true));
                 }
             }
         }
 
         manager.getStage().addActor(group);
-        group.setPosition(100,100);
+        group.setPosition(100, 100);
+
+        startPosition = new Vector2(group.getX(), group.getY());
 
         group.addListener(new InputListener()
         {
@@ -64,15 +70,12 @@ public class FigureHolder
                 float deltaY = eventOffsetY - grabOffsetY;
 
                 group.moveBy(deltaX, deltaY);
-                Gdx.app.log("POS", group.getX() + " " + group.getY());
-                Gdx.app.log("EVENT", event.getStageX() + " " + event.getStageY());
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 putOnBoard();
-                group.remove();
             }
         });
     }
@@ -82,26 +85,29 @@ public class FigureHolder
         for (Actor actor : group.getChildren())
         {
             Cell cell = (Cell) actor;
-            float closestDistance = Float.MAX_VALUE;
+            boolean putted = false;
+            float distance = CELL_HEIGHT + 1f;
             for (int i = 0; i < BOARD_WIDTH; i++)
             {
                 for (int j = 0; j < BOARD_HEIGHT; j++)
                 {
                     Cell target = manager.getCell(i, j);
-                    if (cell.overlaps(target))
+                    if (cell.overlaps(target) && !putted)
                     {
-                        Vector2 stage_coords = cell.localToStageCoordinates(new Vector2(0,0));
-                        float currentDistance = Vector2.dst(stage_coords.x, stage_coords.y, target.getX(), target.getY());
+                        Vector2 stage_coords = cell.localToStageCoordinates(new Vector2(0, 0));
+                        distance = Vector2.dst(stage_coords.x, stage_coords.y, target.getX(), target.getY());
 
-                        if (currentDistance < closestDistance)
-                        {
-                            manager.putCell(i,j);
-                            closestDistance = currentDistance;
-                        }
+                        manager.putCell(i, j);
+                        putted = true;
+                        // group.remove();
                     }
                 }
             }
-
+            if (distance > CELL_WIDTH + 2f)
+            {
+                group.addAction(Actions.moveTo(startPosition.x, startPosition.y, 0.6f, Interpolation.swingOut));
+                break;
+            }
         }
     }
 }

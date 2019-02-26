@@ -55,7 +55,7 @@ public class GameScreen implements InputProcessor, Screen
         mainStage.draw();
 
         Gdx.gl.glViewport(0,0, 1000,800);
-        uiStage.draw();
+//        uiStage.draw();
     }
 
     @Override
