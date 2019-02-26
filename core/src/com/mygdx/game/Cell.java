@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -93,7 +94,8 @@ public class Cell extends Actor
     }
     public Polygon getBounds()
     {
-        bounds.setPosition( getX(), getY() );
+        Vector2 stage_coords = localToStageCoordinates(new Vector2(0,0));
+        bounds.setPosition(stage_coords.x, stage_coords.y);
         bounds.setOrigin( getOriginX(), getOriginY() );
         bounds.setRotation( getRotation() );
         bounds.setScale( getScaleX(), getScaleY() );

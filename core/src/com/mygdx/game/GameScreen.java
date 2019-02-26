@@ -13,10 +13,12 @@ public class GameScreen implements InputProcessor, Screen
     private float step;
     private boolean paused;
     private Stage mainStage;
+    private Stage uiStage;
 
     public GameScreen()
     {
         mainStage = new Stage(new FitViewport(WORLD_WIDTH, WORLD_HEIGHT));
+       // uiStage = new Stage(new FitViewport(WORLD_WIDTH + 200, WORLD_HEIGHT));
         manager = new CellManager(mainStage);
         step = 0;
         paused = true;
@@ -49,13 +51,17 @@ public class GameScreen implements InputProcessor, Screen
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        Gdx.gl.glViewport(0,0, 800,800);
         mainStage.draw();
+
+        Gdx.gl.glViewport(0,0, 1000,800);
+        uiStage.draw();
     }
 
     @Override
     public void resize(int width, int height)
     {
-
+    //    uiStage.getViewport().update(width, height, true);
     }
 
     @Override

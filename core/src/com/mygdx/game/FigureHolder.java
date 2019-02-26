@@ -34,16 +34,14 @@ public class FigureHolder
             {
                 if (source[i][j] == 1)
                 {
-                    group.addActor(new Cell(100 + j * CELL_WIDTH, 100 + i * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, manager.getStage(), CELL_TEXTURE(), true));
+                    group.addActor(new Cell( j * CELL_WIDTH,  i * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, manager.getStage(), CELL_TEXTURE(), true));
                 }
             }
         }
 
         manager.getStage().addActor(group);
-        group.setSize(CELL_WIDTH, 2 * CELL_WIDTH);
+        group.setPosition(100,100);
 
-        Vector2 cords = new Vector2(group.getX(), group.getY());
-        group.localToStageCoordinates(new Vector2(0,0));
         group.addListener(new InputListener()
         {
             private float grabOffsetX;
@@ -79,7 +77,7 @@ public class FigureHolder
         });
     }
 
-    public void putOnBoard()
+    private void putOnBoard()
     {
         for (Actor actor : group.getChildren())
         {
@@ -92,7 +90,8 @@ public class FigureHolder
                     Cell target = manager.getCell(i, j);
                     if (cell.overlaps(target))
                     {
-                        float currentDistance = Vector2.dst(cell.getX(), cell.getY(), target.getX(), target.getY());
+                        Vector2 stage_coords = cell.localToStageCoordinates(new Vector2(0,0));
+                        float currentDistance = Vector2.dst(stage_coords.x, stage_coords.y, target.getX(), target.getY());
 
                         if (currentDistance < closestDistance)
                         {

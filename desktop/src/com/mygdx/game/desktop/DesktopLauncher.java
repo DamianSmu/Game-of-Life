@@ -10,7 +10,7 @@ import static com.mygdx.game.GameConfig.*;
 public class DesktopLauncher {
     public static void main (String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.width = WORLD_WIDTH;
+        config.width = WORLD_WIDTH ;
         config.height = WORLD_HEIGHT;
         new LwjglApplication(new LifeGame(), config);
     }
